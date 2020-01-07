@@ -1,0 +1,177 @@
+{% extends 'shop/basic.html'%}
+    <style>
+      .col-md-3{
+        display:inline-block;
+        margin-left:-4px;
+      }
+
+      .carousel-indicators .active{
+        background-color: blue;
+      }
+
+      .col-md-3 img{
+        width:255px;
+        height:255px;
+      }
+
+      body.carousel-indicators {
+        bottom:0;
+      }
+      body .carousel-indicator li{
+        background-color: blue;
+      }
+      body .carousel-control-prev-icon,
+      body .carousel-control-next-icon{
+        background-color: blue;
+      }
+      .carousel-control-next{
+        top: auto;
+        bottom: auto;
+        padding-top:222px
+      } 
+      .carousel-control-prev {
+        top: auto;
+        bottom: auto;
+        padding-top: 222px
+      }
+      body .no-padding{
+        padding-left: 0;
+        padding-right:0; 
+      }
+      
+
+    </style>
+    {% block body %}
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="/shop">My awesome cart</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="/shop">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/shop/about">About Us</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/shop/tracker">Tracker</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/blog">Blog</a>
+              </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/shop/contact">Contact Us</a>
+            </li>
+           
+          </ul>
+          <form method="get" action="/shop/search/" class="form-inline">
+            <input class="form-control mr-sm-2" type="search" placeholder="use small alphabets" aria-label="Search" 
+                   name="search" id="search">
+            <button class="btn btn-outline-success my-2" type="submit">Search</button>
+          </form>
+          <button  class="btn btn-primary clear mx-2">Clear Cart</button>
+          <a class="nav-link" href="/shop/checkout">
+          <button  class="btn btn-primary checkout">Checkout</button></a>
+          <button type="button" data-html="true" class="btn btn-secondary" id="popcart" data-container="body" data-toggle="popover" data-placement="bottom" data-content="Vivamus
+          sagittis lacus vel augue laoreet rutrum faucibus.">
+          Cart(<span id="cart">0</span>)
+          </button>
+        </div>
+      </nav>
+
+      <!--form content-->
+
+      <div class="container">
+            <div class="row">
+              <div class="col-md-8 order-md-1 container">
+                  <br>
+                  <br>
+                <b>Enter details to Login.</b>
+                <br>
+                <br>
+                <form action="/shop/register/" method="POST">{% csrf_token %}
+                  <div class="row">
+                    <div class="col-md-6 mb-3">
+                      <label for="first_name">First name</label>
+                      <input type="text" class="form-control" id="first_name" name="first_name">
+                      <div class="invalid-feedback">
+                        Valid first name is required.
+                      </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label for="last_name">Last name</label>
+                      <input type="text" class="form-control" id="last_name" name="last_name">
+                      <div class="invalid-feedback">
+                        Valid last name is required.
+                      </div>
+                    </div>
+                  </div>
+          
+                  <div class="mb-3">
+                    <label for="user_name">Username</label>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                      </div>
+                      <input type="text" class="form-control" id="user_name" name="user_name" placeholder="Username">
+                      <div class="invalid-feedback" style="width: 100%;">
+                        Your username is required.
+                      </div>
+                    </div>
+                  </div>
+          
+                  <div class="mb-3">
+                    <label for="email">Email <span class="text-muted"></span></label>
+                    <input type="email" class="form-control" id="email" name="email" placeholder="you@example.com">
+                    <div class="invalid-feedback">
+                      Please enter a valid email address for shipping updates.
+                    </div>
+                  </div>
+          
+                  <div class="mb-3">
+                    <label for="password">Password</label>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Enter password">
+                    <div class="invalid-feedback">
+                      Please enter your shipping address.
+                    </div>
+                  </div>
+          
+                  <div class="mb-3">
+                    <label for="confirm_password">Confirm Password<span class="text-muted"></span></label>
+                    <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Enter password again">
+                  </div>
+
+                  <button type="submit" class="btn btn-success">Success</button>
+                </form>
+          </div>
+
+          {%endblock%}
+
+
+      {% block js %}
+      <script>
+        {% if thank %}
+
+           alert('Login sucessfull !!!');
+           document.location="/shop";
+
+        {% endif%}
+
+        {% if welcome %}
+             
+           alert('Login unsucessfull. Email already taken !!!');
+
+        {% endif %}
+
+        {% if hello %}
+
+           alert('Login unsucessfull. Password does not match !!!');
+        {% endif %}
+
+      </script>
+      
+
+
+      {%endblock%}

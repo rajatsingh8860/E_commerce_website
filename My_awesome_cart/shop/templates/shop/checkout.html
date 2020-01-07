@@ -1,0 +1,148 @@
+{% extends 'shop/basic.html'%}
+{% block title %}Checkout Page{% endblock%}
+{% block body %} 
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="/shop">My awesome cart</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="/shop">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/shop/about">About Us</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/shop/tracker">Tracker</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/shop/contact">Contact Us</a>
+        </li>
+      </ul>
+      <form class="form-inline ">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      </form>
+      <button type="button" data-html="true" class="btn btn-secondary" id="popcart" data-container="body" data-toggle="popover" data-placement="bottom" data-content="Vivamus
+      sagittis lacus vel augue laoreet rutrum faucibus.">
+      Cart(<span id="cart">0</span>)
+      </button>
+    </div>
+  </nav>
+<div class="container my-4">
+  <div class="col">
+    <h1> My Awesome cart express review checkout - Review your cart items</h1>
+    <div >
+            <ul class="list-group my-4" id="items">
+                    <!--<li class="list-group-item d-flex justify-content-between align-items-center">
+                      Cras justo odio
+                      <span class="badge badge-primary badge-pill">14</span>
+                    </li>-->
+                  </ul>
+                  <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                      <li class="breadcrumb-item active" aria-current="page">Your cart total is Rs.
+                         <b><span id="totalPrice"></span></b> </li>
+                    </ol>
+                  </nav>
+                        
+                 
+    </div>
+  </div>
+  <div class="col my-2">
+      <h1> Step-2 Enter Address and other details: </h1>
+      <br>
+      <form method="post" action="/shop/checkout/">{% csrf_token %}
+        <input type="hidden" id="itemJson" name="itemJson">
+        <input type="hidden" id="amount" name="amount">
+          <div class="form-row">
+              <div class="form-group col-md-6">
+                  <label for="inputname">Name</label>
+                  <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name">
+                </div>
+            <div class="form-group col-md-6">
+              <label for="inputEmail4">Email</label>
+              <input type="email" class="form-control" id="email" name="email" placeholder="Email">
+            </div>
+          </div>
+          <div class="form-group">
+              <label for="inputAddress">Phone no</label>
+              <input type="tel" class="form-control" id="phone_no" name="phone_no" placeholder="Phone no">
+            </div>
+          <div class="form-group">
+            <label for="inputAddress">Address</label>
+            <input type="text" class="form-control" id="address1" name="address1" placeholder="1234 Main St">
+          </div>
+          
+          <div class="form-group">
+            <label for="inputAddress2">Address line 2</label>
+            <input type="text" class="form-control" id="address2" name="address2" placeholder="Apartment, studio, or floor">
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="inputCity">City</label>
+              <input type="text" class="form-control" name="city" id="city">
+            </div>
+            <div class="form-group col-md-4">
+              <label for="inputState">State</label>
+              <input type="text" class="form-control" id="state" name="state" placeholder="Enter State">
+            </div>
+            <div class="form-group col-md-2">
+              <label for="inputZip">Zip</label>
+              <input type="text" class="form-control" id="zip_code" name="zip_code">
+            </div>
+          </div>
+          <div class="form-group">
+          </div>
+          <button type="submit" class="btn btn-primary">Place order</button>
+        </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script>
+    if(localStorage.getItem('cart')==null){
+      var cart={};
+    }
+    else{
+      cart=JSON.parse(localStorage.getItem('cart'));
+    }
+sum=0;
+totalPrice=0;
+if($.isEmptyObject(cart)){
+  //if no item is selected in the cart and user still wants to checkout
+  myStr="Your cart is empty Please add some items before checking out";
+  $('#items').append(myStr);
+} 
+else{   
+for(item in cart){
+  let name =cart[item][1];
+  let qty=cart[item][0];
+  let itemPrice=cart[item][2];
+  sum=sum+qty;
+  totalPrice=totalPrice+qty*itemPrice
+  myStr=  `<li class="list-group-item d-flex justify-content-between align-items-center">
+      ${name}
+      <span class="badge badge-primary badge-pill">${qty}</span>
+    </li>`
+    $('#items').append(myStr);
+} 
+document.getElementById('cart').innerHTML=sum;
+document.getElementById('totalPrice').innerHTML=totalPrice;
+}   
+//to pass Items in json format in database
+$('#itemJson').val(JSON.stringify(cart));
+{% if thank %}   
+alert('Thanks for ordering with us.Your order id is {{id}}.You can track your order using your order id');
+localStorage.clear();
+document.location="/shop";
+{% endif %}  
+
+//for setting totalprice to the hidden amount field
+$('#amount').val($('#totalPrice').html())
+</script>
+{%endblock%}

@@ -1,0 +1,70 @@
+{% extends 'shop/basic.html'%}
+{% block title %}contact page{% endblock%}
+{% block body %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="/shop">My awesome cart</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="/shop">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/shop/about">About Us</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/shop/tracker">Tracker</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/shop/contact">Contact Us</a>
+        </li>
+      </ul>
+      <form class="form-inline ">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      </form>
+      <button type="button" data-html="true" class="btn btn-secondary" id="popcart" data-container="body" data-toggle="popover" data-placement="bottom" data-content="Vivamus
+      sagittis lacus vel augue laoreet rutrum faucibus.">
+      Cart(<span id="cart">0</span>)
+      </button>
+    </div>
+  </nav>
+
+<div class="container">
+    <b>Contact Us</b>
+<form action="/shop/contact/" method="POST">{% csrf_token %}
+  <input type="hidden" id="itemJson" name="itemJson">
+        <div class="form-group my-4">
+          <label for="name">Name</label>
+          <input type="text" class="form-control" id="name" placeholder="Enter your name" name="name">
+        </div>
+        <div class="form-group">
+        <label for="email">Email</label>
+          <input type="email" class="form-control" id="email" placeholder="Enter your Email Address" name="email">
+        </div>
+        <div class="form-group">
+        <label for="phone_no">Phone no</label>
+          <input type="tel" class="form-control" id="phone_no" placeholder="Enter your Phone no" name="phone_no">
+        </div>
+        <div class="form-group">
+          <label for="desc">How may we help you ?</label>
+          <textarea class="form-control" id="desc" rows="3" name="desc"></textarea>
+        </div>
+        <button type="submit" id="btn_submit"class="btn btn-success">Submit</button>
+
+        
+      </form>
+    </div>
+{% endblock %}
+{% block js%}
+<script>
+    $('#itemJson').val(JSON.stringify(cart));
+    {% if thank %}   
+    alert('Your form is sucessfully submitted');
+    document.location="/shop";
+    {% endif %}  
+</script>
+{%endblock%}

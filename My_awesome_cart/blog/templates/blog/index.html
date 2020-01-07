@@ -1,0 +1,64 @@
+{% extends 'blog/basic.html'%}
+{% block body%}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="/shop">My awesome cart</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="/shop">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/shop/about">About Us</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/shop/tracker">Tracker</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/blog">Blog</a>
+              </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/shop/contact">Contact Us</a>
+            </li>
+           
+          </ul>
+          <form class="form-inline ">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2" type="submit">Search</button>
+          </form>
+          <button  class="btn btn-primary clear mx-2">Clear Cart</button>
+          <a class="nav-link" href="/shop/checkout">
+          <button  class="btn btn-primary checkout">Checkout</button></a>
+          <button type="button" data-html="true" class="btn btn-secondary" id="popcart" data-container="body" data-toggle="popover" data-placement="bottom" data-content="Vivamus
+          sagittis lacus vel augue laoreet rutrum faucibus.">
+          Cart(<span id="cart">0</span>)
+          </button>
+        </div>
+      </nav>
+      <div class="container">
+        <div class="row my-4">
+      {% for item in myposts%}
+        <div class="col-md-6">
+          <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+            <div class="col p-4 d-flex flex-column position-static">
+              <strong class="d-inline-block mb-2 text-primary">{{item.head0}}</strong>
+              <h3 class="mb-0">{{item.title}}</h3>
+              <div class="mb-1 text-muted">Nov 12</div>
+              <p class="card-text mb-auto">{{item.head1}}</p>
+              <a href="blogpostrajat/{{item.post_id}}" class="stretched-link">Continue reading</a>
+            </div>
+            <div class="col-auto d-none d-lg-block">
+              <img src="/media/{{item.thumbnail}}"class="bd-placeholder-img" width="200" height="250" />
+            </div>
+          </div>
+        </div>
+        {%if forloop.counter|divisibleby:2%}
+      </div><div class="row my-4">
+        {%endif%}
+      {%endfor%}
+    </div>
+        
+      {% endblock%}
